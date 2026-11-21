@@ -1,0 +1,99 @@
+/* =========================================================
+   PAGE EMBLEM — logo animasi di pojok kanan tiap halaman dalam
+   Satu emblem per halaman (buku untuk Kelas X, topi toga untuk
+   Kelas XII, tumpukan buku untuk tiap semester, dst).
+   Warna ikut variabel tema: --accent (garis utama) & --bone.
+   Klik emblem untuk memutar ulang animasinya.
+   ========================================================= */
+main{position:relative}
+.emblem{
+  position:absolute; top:96px; right:0; z-index:1;
+  width:clamp(96px,15vw,200px); aspect-ratio:1;
+  cursor:pointer; -webkit-tap-highlight-color:transparent;
+}
+.emblem svg{width:100%;height:100%;overflow:visible;fill:none;stroke:var(--bone,#ece4d3);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.emblem .a{stroke:var(--accent,#f2c14e)}
+.emblem .f{fill:var(--accent,#f2c14e);fill-opacity:.1}
+.emblem .fs{fill:var(--accent,#f2c14e);fill-opacity:1;stroke:none}
+.emblem .fb{fill:var(--bone,#ece4d3);fill-opacity:.08}
+@media (max-width:700px){ .emblem{top:76px;width:76px} .emblem + h1{margin-top:52px} }
+
+/* ----- garis digambar saat masuk ----- */
+.emblem .dr{stroke-dasharray:1;stroke-dashoffset:1}
+.emblem.in .dr{animation:emDraw 1s cubic-bezier(.65,0,.35,1) forwards;animation-delay:calc(var(--d,0) * 1s)}
+@keyframes emDraw{to{stroke-dashoffset:0}}
+.emblem .pop{opacity:0}
+.emblem.in .pop{animation:emPop .5s cubic-bezier(.2,.9,.3,1.3) forwards;animation-delay:calc(var(--d,.6) * 1s)}
+@keyframes emPop{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:scale(1)}}
+.emblem .pop,.emblem .sw,.emblem .tw{transform-box:fill-box;transform-origin:center}
+
+/* ----- BUKU (Kelas X): halaman berganti ----- */
+.emblem .leaf{transform-box:view-box;transform-origin:100px 100px;opacity:0}
+.emblem.in .leaf{animation:emFlip 3.6s cubic-bezier(.45,.05,.3,1) infinite;animation-delay:calc(1.3s + var(--l,0) * 1.8s)}
+@keyframes emFlip{
+  0%{transform:scaleX(1);opacity:0}
+  4%{opacity:1}
+  30%{transform:scaleX(.12) skewY(-7deg)}
+  50%{transform:scaleX(-1);opacity:1}
+  58%{transform:scaleX(-1);opacity:0}
+  100%{transform:scaleX(-1);opacity:0}
+}
+.emblem .rib{transform-box:fill-box;transform-origin:top center}
+.emblem.in .rib{animation:emSway 3.2s ease-in-out infinite alternate}
+@keyframes emSway{from{transform:rotate(-2.5deg)}to{transform:rotate(2.5deg)}}
+
+/* ----- BUKU CATATAN + PENSIL (Kelas XI) ----- */
+.emblem.in .pencil{animation:emWrite 3.4s cubic-bezier(.5,0,.5,1) infinite 1s both}
+@keyframes emWrite{0%{transform:translate(66px,88px) rotate(32deg)}70%,100%{transform:translate(134px,88px) rotate(32deg)}}
+.emblem.in .scrib{stroke-dasharray:1;animation:emScrib 3.4s cubic-bezier(.5,0,.5,1) infinite 1s both}
+@keyframes emScrib{0%{stroke-dashoffset:1}70%,92%{stroke-dashoffset:0}100%{stroke-dashoffset:-1}}
+
+/* ----- TOPI TOGA (Kelas XII) ----- */
+.emblem.in .tassel{transform-box:view-box;transform-origin:168px 88px;animation:emSwing 2.6s ease-in-out infinite alternate 1.4s}
+@keyframes emSwing{from{transform:rotate(7deg)}to{transform:rotate(-7deg)}}
+.emblem.in .capall{transform-box:view-box;transform-origin:100px 110px;animation:emTilt 5s ease-in-out infinite alternate 1.4s}
+@keyframes emTilt{from{transform:rotate(-2deg) translateY(0)}to{transform:rotate(2deg) translateY(-3px)}}
+
+/* ----- TUMPUKAN BUKU (Semester N) ----- */
+.emblem.in .bk{animation:emDrop .7s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i) * .14s)}
+@keyframes emDrop{from{opacity:0;transform:translateY(-26px)}to{opacity:1;transform:none}}
+.emblem .bk{opacity:0}
+.emblem.in .lift{animation:emLift 4.8s ease-in-out infinite;animation-delay:calc(var(--i) * .14s + 1.6s)}
+@keyframes emLift{0%,70%,100%{transform:translateY(0)}80%{transform:translateY(-8px)}90%{transform:translateY(0)}}
+
+/* ----- PIAGAM (Sertifikat) ----- */
+.emblem.in .seal{animation:emStamp 4.2s cubic-bezier(.3,1.4,.4,1) infinite 1.2s}
+@keyframes emStamp{0%{opacity:0;transform:scale(1.9) rotate(-14deg)}10%{opacity:1;transform:scale(1) rotate(0)}14%{transform:scale(1.06)}18%,88%{opacity:1;transform:scale(1)}96%,100%{opacity:0;transform:scale(1)}}
+.emblem .seal{opacity:0;transform-box:fill-box;transform-origin:center}
+
+/* ----- PENA (Karya Tulisan) ----- */
+.emblem.in .ink{stroke-dasharray:1;animation:emInk 4s cubic-bezier(.45,0,.55,1) infinite 1s both}
+@keyframes emInk{0%{stroke-dashoffset:1}75%,90%{stroke-dashoffset:0}100%{stroke-dashoffset:-1}}
+
+/* ----- PEN TOOL (Poster Design) ----- */
+.emblem.in .anch{animation:emAnch 3.6s ease-in-out infinite alternate 1.4s}
+@keyframes emAnch{from{transform:translate(0,0)}to{transform:translate(7px,-9px)}}
+.emblem .anch{transform-box:fill-box}
+.emblem.in .curve{animation:emDraw 1s cubic-bezier(.65,0,.35,1) .6s forwards, emCurve 3.6s ease-in-out infinite alternate 1.7s}
+@keyframes emCurve{from{d:path("M62 128 C 82 76, 112 150, 138 78")}to{d:path("M62 128 C 82 76, 119 141, 138 78")}}
+
+/* ----- JENDELA KODE (Project dan Karya) ----- */
+.emblem.in .code{stroke-dasharray:1;stroke-dashoffset:1;animation:emDraw .7s ease-out forwards;animation-delay:calc(.7s + var(--k) * .45s)}
+.emblem.in .cursor{animation:emBlink 1s steps(1) infinite 2.6s}
+@keyframes emBlink{50%{opacity:0}}
+
+/* ----- TROFI (Prestasi) ----- */
+.emblem.in .shine{animation:emShine 3.8s ease-in-out infinite 1.6s}
+@keyframes emShine{0%{transform:translateX(-60px)}35%,100%{transform:translateX(90px)}}
+.emblem.in .starp{transform-box:fill-box;transform-origin:center;animation:emStar 3.8s ease-in-out infinite 1.6s}
+@keyframes emStar{0%,25%,60%,100%{transform:scale(1)}40%{transform:scale(1.35)}}
+
+/* ----- RUTE (Pengalaman) ----- */
+.emblem.in .flag{transform-box:fill-box;transform-origin:left center;animation:emWave 1.6s ease-in-out infinite alternate 2s}
+@keyframes emWave{from{transform:skewY(-6deg) scaleX(1)}to{transform:skewY(6deg) scaleX(.9)}}
+
+@media (prefers-reduced-motion:reduce){
+  .emblem *{animation:none!important}
+  .emblem .dr,.emblem .code,.emblem .scrib,.emblem .ink{stroke-dashoffset:0}
+  .emblem .pop,.emblem .bk,.emblem .seal{opacity:1}
+}

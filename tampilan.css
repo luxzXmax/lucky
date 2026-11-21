@@ -1,0 +1,241 @@
+/* =====================================================================
+   TAMPILAN BARU — dimuat paling akhir, menimpa gaya lama.
+   Fungsi & efek (cubes, lanyard, masked heading, musik) tidak diubah.
+   Semua warna & font diatur dari variabel di sini.
+   ===================================================================== */
+:root{
+  --ground:#0f0d0b;      /* hitam hangat */
+  --raise:#1a1612;
+  --bone:#ece4d3;        /* teks utama */
+  --soft:#cbc2ae;
+  --mute:#a89f8b;
+  --rule:#3a3329;        /* garis tipis */
+  --accent:#f2c14e;      /* satu-satunya aksen: kuning tua */
+  --serif:"Instrument Serif","Iowan Old Style",Georgia,"Times New Roman",serif;
+  --sans:"Schibsted Grotesk","Helvetica Neue",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"DM Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --fx-bg:rgba(22,19,16,.97); --fx-fg:var(--bone); --fx-bd:var(--rule); --fx-ac:var(--accent);
+}
+
+html{-webkit-text-size-adjust:100%}
+body,button,input,select,textarea,
+.fx-fab,.fx-item,#fxClock small,.mp-title,.mp-seekrow,.mp-form input,.mp-form button,.mp-file,.mp-item,#fxShareMsg{
+  font-family:var(--sans)!important;
+}
+body{background:var(--ground);color:var(--bone);font-size:16px;line-height:1.6;font-weight:400}
+::selection{background:var(--accent);color:#141008}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+/* buang hiasan generik */
+.glow{display:none}
+.overlay{background:linear-gradient(90deg,rgba(15,13,11,.82) 0%,rgba(15,13,11,.55) 100%)}
+.scroll .mouse{display:none}
+
+/* ---------- NAV ---------- */
+nav{background:rgba(15,13,11,.92);backdrop-filter:none;border-bottom:1px solid var(--rule);padding:16px 5%}
+.logo{font-family:var(--serif);font-weight:400;font-size:30px;line-height:1;letter-spacing:-.01em;text-decoration:none;color:var(--bone)}
+.logo span{color:var(--accent)}
+nav ul{gap:28px}
+nav a{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);padding-bottom:5px}
+nav a::after{height:1px;background:var(--accent)}
+nav a:hover,nav a.active{color:var(--bone)}
+
+/* ---------- HERO ---------- */
+.home{padding:130px 7% 80px}
+.content{max-width:1100px}
+.small-title{font-family:var(--mono);font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:22px}
+h1{
+  font-family:var(--serif);font-weight:400;
+  font-size:clamp(64px,12vw,184px);line-height:.88;letter-spacing:-.025em;
+  background:none;-webkit-background-clip:border-box;background-clip:border-box;animation:none;color:var(--bone);
+}
+h1 span{font-style:normal}
+.job{font-family:var(--mono);font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin:34px 0 14px}
+.description{font-size:clamp(17px,1.5vw,20px);line-height:1.6;color:var(--soft);max-width:34em}
+.nav-hint{margin-top:34px;padding:0;border:0;border-radius:0;background:none;color:var(--mute);font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;gap:10px}
+.nav-hint-arrow{color:var(--accent)}
+.nav-hint-arrow svg{width:16px;height:16px}
+
+.social{left:22px;gap:8px}
+.social a{width:44px;height:44px;border-radius:0;border:1px solid var(--rule);background:rgba(15,13,11,.8);color:var(--soft);font-family:var(--mono);font-size:11px;letter-spacing:.06em;backdrop-filter:none;display:grid;place-items:center;text-decoration:none}
+.social a:hover{background:var(--accent);border-color:var(--accent);color:#141008}
+.scroll{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+
+/* ---------- SECTION ---------- */
+section:not(.home){background:rgba(15,13,11,.93);border-top:1px solid var(--rule);padding:clamp(72px,9vw,128px) 7%;min-height:0}
+.title{
+  font-family:var(--serif);font-weight:400;text-align:left;
+  font-size:clamp(46px,8vw,120px);line-height:.92;letter-spacing:-.02em;
+  margin:0 0 clamp(36px,5vw,72px);color:var(--bone);
+  display:flex;align-items:baseline;gap:.35em;flex-wrap:wrap;
+}
+.title span{color:var(--bone);font-style:italic}
+.title .idx{font-family:var(--mono);font-size:13px;letter-spacing:.1em;color:var(--accent);font-style:normal;align-self:flex-start;margin-top:.6em;flex:0 0 100%;margin-bottom:8px;margin-top:0}
+.contact{text-align:left}
+.contact p{font-size:clamp(17px,1.5vw,20px);color:var(--soft);margin-bottom:28px}
+
+/* ---------- ABOUT ---------- */
+.about-wrap{max-width:1180px;margin:0;justify-content:flex-start;gap:clamp(24px,5vw,72px)}
+.about-photo{border-radius:0;border:1px solid var(--rule)}
+.about-info{max-width:640px;min-width:min(100%,280px);background:none;border:0;border-radius:0;padding:0}
+.about-info ul{border-top:1px solid var(--rule);margin-bottom:36px}
+.about-info li{display:grid;grid-template-columns:9.5em 1fr;gap:16px;padding:12px 0;border-bottom:1px solid var(--rule);font-size:16px;line-height:1.5;color:var(--bone)}
+.about-info li b{font-family:var(--mono);font-weight:400;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);padding-top:3px}
+.about-info p{font-family:var(--serif);font-size:clamp(24px,2.4vw,32px);line-height:1.2;color:var(--bone);margin-top:8px}
+.about-info h3,.skill-block h3{font-family:var(--mono);font-weight:400;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+.skills-wrap{gap:28px;margin-bottom:32px}
+.skill-list li{font-size:15.5px;color:var(--soft);line-height:1.5;margin-bottom:6px}
+.skill-list li::before{color:var(--accent)}
+.skill{border-radius:0;background:var(--raise)}
+.bar,.bar div{border-radius:0}
+
+/* ---------- BARIS PROJECT (menggantikan kartu kaca + emoji) ---------- */
+.projects{display:block!important;grid-template-columns:none!important;max-width:1180px;margin:0!important;border-top:1px solid var(--rule)}
+.project{
+  display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"h a" "p a";column-gap:24px;align-items:center;
+  padding:clamp(22px,3vw,36px) 0;margin:0;
+  background:none!important;border:0!important;border-bottom:1px solid var(--rule)!important;border-radius:0!important;box-shadow:none!important;
+  text-align:left;text-decoration:none;color:var(--bone);transition:padding-left .25s ease,color .2s;
+}
+.project h3{grid-area:h;font-family:var(--serif);font-weight:400;font-size:clamp(32px,5vw,64px);line-height:1;letter-spacing:-.015em}
+.project p{grid-area:p;color:var(--mute);font-size:15.5px;margin-top:8px}
+.project-icon{grid-area:a;font-family:var(--mono);font-size:22px;margin:0;color:var(--mute);transition:transform .25s,color .2s}
+.project:hover{padding-left:14px;color:var(--bone)}
+.project:hover h3{color:var(--accent)}
+.project:hover .project-icon{color:var(--accent);transform:translateX(-6px)}
+/* efek foil pelangi/tilt dimatikan untuk baris; tetap aktif di galeri */
+.project.holo.holo,.project.holo.holo:hover,.project.holo.holo.holo-on{transform:none!important;box-shadow:none}
+.project.holo.holo::before,.project.holo.holo::after{display:none}
+
+/* ---------- SOSMED ---------- */
+.sosmed-grid{justify-content:flex-start;gap:0;max-width:1180px;border-top:1px solid var(--rule);display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+.sosmed-card{border:0;border-bottom:1px solid var(--rule);border-radius:0;background:none;padding:26px 24px 26px 0;gap:18px;color:var(--bone)}
+.sosmed-card:hover{border-color:var(--accent)}
+.sosmed-icon,.sosmed-icon.tiktok,.sosmed-icon.instagram,.sosmed-icon.whatsapp{background:none;color:var(--bone);border-radius:0;width:auto;height:auto}
+.sosmed-card:hover .sosmed-icon{color:var(--accent)}
+.sosmed-info h3{font-family:var(--serif);font-weight:400;font-size:30px;line-height:1}
+.sosmed-info p{font-family:var(--mono);font-size:12px;letter-spacing:.04em;color:var(--mute);margin-top:6px}
+
+/* ---------- TOMBOL ---------- */
+.contact .buttons{justify-content:flex-start!important;gap:12px}
+.btn{border-radius:0;border:1px solid var(--bone);color:var(--bone);padding:15px 28px;min-height:48px;font-family:var(--mono);font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;background:none}
+.btn:hover{background:var(--bone);color:#141008}
+.btn-main{background:var(--accent);border-color:var(--accent);color:#141008}
+.btn-main:hover{background:var(--bone);border-color:var(--bone);color:#141008}
+
+/* ---------- MENU / MODAL / MUSIK ---------- */
+.fx-fab,#fxPanel,.fx-box,.fx-stat,.fx-item,.fx-cal-h button,.fx-vid button,.fx-vid input[type=text],#fxClock,.mp-form input,.mp-form button,.mp-file,.mp-item{border-radius:2px!important}
+#fxMenuBtn{font-family:var(--mono)!important;font-size:12px;letter-spacing:.08em;text-transform:uppercase;backdrop-filter:none}
+#fxPanel,.fx-fab,.fx-box,#fxClock{backdrop-filter:none;box-shadow:none}
+.fx-item:hover,.mp-item:hover{background:rgba(242,193,78,.1)}
+.fx-cal .today,#fxShareMsg,.mp-form button:hover{color:#141008}
+#fxClock{font-family:var(--mono)!important}
+.fx-box h3,.fx-stat strong{font-family:var(--serif);font-weight:400}
+.fx-box h3{font-size:26px}
+.fx-stat strong{font-size:28px}
+.mp-dash-h{font-family:var(--mono)!important;font-weight:400!important}
+
+/* ---------- HALAMAN DALAM (semester, project, dll.) ---------- */
+main{max-width:1180px}
+main h1{font-size:clamp(48px,9vw,120px);line-height:.92;margin-bottom:18px}
+main h1 span{font-style:italic;color:var(--bone)}
+.desc{font-size:clamp(17px,1.5vw,20px);color:var(--soft)}
+.back{border-radius:0!important;border:1px solid var(--bone)!important;color:var(--bone)!important;font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:12px 20px!important}
+.back:hover{background:var(--bone)!important;color:#141008!important}
+.grid{display:block!important;max-width:none!important;border-top:1px solid var(--rule)}
+.card{display:grid!important;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"h a" "p a";align-items:center;column-gap:24px;padding:clamp(20px,3vw,32px) 0!important;background:none!important;border:0!important;border-bottom:1px solid var(--rule)!important;border-radius:0!important;transform:none!important}
+.card h3{grid-area:h;font-family:var(--serif);font-weight:400;font-size:clamp(30px,4.5vw,56px);line-height:1;margin:0}
+.card p{grid-area:p;margin-top:6px}
+.card .icon{grid-area:a;font-family:var(--mono);font-size:22px;margin:0;color:var(--mute)}
+.card:hover h3{color:var(--accent)}
+.empty-note{border-radius:0;color:var(--mute);border-color:var(--rule)}
+.post-card{border-radius:0!important}
+
+/* ---------- MODE TERANG ---------- */
+html[data-theme=light]{--ground:#f1ebdd;--raise:#e8e0cd;--bone:#1c1814;--soft:#4a4236;--mute:#6f6555;--rule:#cfc4ac;--accent:#9a6a00;--fx-bg:rgba(255,252,244,.97)}
+html[data-theme=light] body{background:#f1ebdd;color:#1c1814}
+html[data-theme=light] nav,html[data-theme=light] section:not(.home){background:rgba(241,235,221,.93)}
+html[data-theme=light] .overlay{background:linear-gradient(90deg,rgba(241,235,221,.9),rgba(241,235,221,.7))}
+html[data-theme=light] nav a:hover,html[data-theme=light] nav a.active{color:#1c1814}
+html[data-theme=light] .btn-main,html[data-theme=light] .btn:hover,html[data-theme=light] .back:hover{color:#f1ebdd!important}
+html[data-theme=light] .about-info li,html[data-theme=light] .sosmed-card,html[data-theme=light] .project{color:#1c1814}
+html[data-theme=light] .about-info li b{color:#6f6555}
+html[data-theme=light] .social a{background:rgba(241,235,221,.9);color:#1c1814}
+
+/* ---------- HP ---------- */
+@media(max-width:900px){
+  .sosmed-grid{grid-template-columns:1fr}
+}
+@media(max-width:700px){
+  nav{padding:12px 5%}
+  .logo{font-size:26px}
+  nav a{font-size:10.5px}
+  h1{font-size:clamp(52px,17vw,96px);letter-spacing:-.02em}
+  .home{padding:112px 7% 64px}
+  .about-info li{grid-template-columns:1fr;gap:2px}
+  .title{font-size:clamp(42px,14vw,72px)}
+  section:not(.home){padding:72px 6%}
+  .project h3{font-size:clamp(30px,9vw,44px)}
+}
+@media (prefers-reduced-motion:reduce){.project,.project-icon{transition:none}}
+
+/* ---------- PERBAIKAN ROUND 1 ---------- */
+.home{overflow-x:clip}
+.about-info>ul>li{display:grid;grid-template-columns:9.5em 1fr;gap:16px}
+.about-info .skill-list li{display:block;padding:0;border:0;font-size:15.5px;color:var(--soft)}
+.about-info>ul{border-top:1px solid var(--rule)}
+.about-info .skill-list{border:0;margin:0}
+.sosmed-grid{margin:0!important}
+#musik{padding:clamp(72px,9vw,128px) 7%!important}
+#musik .title{text-align:left;margin-bottom:12px}
+.mp-sub{text-align:left;margin:0 0 28px;max-width:34em;font-size:16px}
+.mp-wrap{margin:0;max-width:640px;border-radius:0!important}
+.mp-now{background:none}
+@media(max-width:1200px){
+  .nav-wrap{position:relative;max-width:calc(100vw - 190px)}
+  nav ul{overflow-x:auto;flex-wrap:nowrap;scrollbar-width:none;gap:22px}
+  nav ul::-webkit-scrollbar{display:none}
+  nav a{white-space:nowrap}
+}
+@media(max-width:700px){
+  .nav-wrap{max-width:62vw}
+  .about-info>ul>li{grid-template-columns:1fr;gap:2px}
+  #musik{padding:72px 6%!important}
+}
+.about-info .skill-list li{padding-left:22px}
+main{margin:0!important;padding-left:7%!important;padding-right:7%!important}
+
+/* ---------- GRADASI PUTIH DI BAWAH (warna lain tidak diubah) ---------- */
+.home,#contact{position:relative}
+.home .content{position:relative;z-index:1}
+.home::after,#contact::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;pointer-events:none;z-index:0;
+  height:42%;
+  background:linear-gradient(to top,rgba(255,250,240,.26) 0%,rgba(255,250,240,.12) 38%,rgba(255,250,240,0) 100%);
+}
+#contact::after{height:34%}
+#contact>*{position:relative;z-index:1}
+html[data-theme=light] .home::after,html[data-theme=light] #contact::after{background:linear-gradient(to top,rgba(255,255,255,.7),rgba(255,255,255,0))}
+@media(max-width:700px){.home::after{height:34%}}
+
+/* ---------- OBJEK HERO: kok badminton + teks melingkar ---------- */
+.hero-object{
+  --px:0px;--py:0px;
+  position:absolute;z-index:0;pointer-events:none;color:var(--bone);
+  right:clamp(40px,8vw,150px);top:50%;width:min(31vw,440px);aspect-ratio:1;
+  transform:translate(var(--px),calc(-50% + var(--py)));
+}
+.ho-ring{position:absolute;inset:0;width:100%;height:100%;animation:hoSpin 40s linear infinite}
+.ho-ring text{font:500 14.5px var(--mono);letter-spacing:.2em;fill:var(--mute);text-transform:uppercase}
+.ho-float{position:absolute;inset:0;display:grid;place-items:center;animation:hoFloat 6.5s ease-in-out infinite}
+.ho-shuttle{width:44%;height:auto;rotate:-24deg;filter:drop-shadow(0 22px 28px rgba(0,0,0,.55))}
+@keyframes hoSpin{to{transform:rotate(360deg)}}
+@keyframes hoFloat{0%,100%{transform:translateY(-14px) rotate(-2deg)}50%{transform:translateY(14px) rotate(3deg)}}
+@media(max-width:1000px){.hero-object{width:min(36vw,260px);top:150px;right:5%;transform:none;opacity:.85}}
+@media(max-width:700px){.hero-object{width:132px;top:92px;right:4%}.ho-ring text{font-size:16px}}
+@media (prefers-reduced-motion:reduce){.ho-ring,.ho-float{animation:none}}
+
+/* Riwayat sekolah (About Me) */
+.about-info .school-history{margin-bottom:36px}
+.about-info .sh-now{display:inline-block;margin-left:8px;padding:2px 10px;border-radius:20px;background:rgba(242,193,78,.15);color:var(--accent);font-family:var(--mono);font-size:11px;letter-spacing:.04em;vertical-align:middle}
+@media(max-width:700px){.about-info .sh-now{margin-left:0;margin-top:4px}}

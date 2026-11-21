@@ -1,0 +1,128 @@
+/* Daftar mata pelajaran di halaman semester */
+.mapel-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(230px, 1fr));
+    gap:16px;
+}
+
+.mapel-card{
+    position:relative;
+    overflow:hidden;
+    min-height:104px;
+    display:block;
+    padding:20px 20px 18px;
+    background:rgba(26,22,18,.8);
+    border:1px solid #3a3329;
+    border-radius:12px;
+    color:inherit;
+    text-decoration:none;
+    transition:.3s;
+}
+
+.mapel-card:hover{
+    transform:translateY(-6px);
+    border-color:#f2c14e;
+}
+
+.mapel-card-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:10px;
+    margin-bottom:6px;
+}
+
+.mapel-card h3{
+    font-size:18px;
+    line-height:1.3;
+}
+
+.mapel-count{
+    flex:none;
+    font-size:11px;
+    padding:3px 9px;
+    border-radius:20px;
+    background:rgba(242,193,78,.15);
+    color:#f2c14e;
+    white-space:nowrap;
+}
+
+.mapel-count.zero{
+    background:rgba(255,255,255,.06);
+    color:#8a8270;
+}
+
+.mapel-full{
+    color:#cbc2ae;
+    font-size:13px;
+    line-height:1.5;
+    margin-bottom:6px;
+}
+
+/* Tampilan tugas dalam satu mapel */
+.mapel-back{
+    display:inline-block;
+    color:#f2c14e;
+    text-decoration:none;
+    font-size:14px;
+    margin-bottom:18px;
+}
+
+.mapel-back:hover{
+    text-decoration:underline;
+}
+
+.mapel-title{
+    font-size:clamp(26px,4.5vw,38px);
+    margin-bottom:6px;
+}
+
+#postGrid > .mapel-full,
+#postGrid > #subjectPosts{
+    margin-top:28px;
+}
+
+html[data-theme=light] .mapel-card{
+    background:rgba(255,255,255,.9);
+    border-color:#d8cdb8;
+    color:#1c1814;
+}
+html[data-theme=light] .mapel-full{ color:#5b5244; }
+[hidden]{display:none !important}
+
+/* Foto muncul saat kartu di-hover / disentuh */
+.mapel-bg{
+    position:absolute;
+    inset:0;
+    background-size:cover;
+    background-position:center;
+    opacity:0;
+    transform:scale(1.12);
+    transition:opacity .45s ease, transform .6s ease;
+    z-index:0;
+}
+.mapel-card::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(180deg, rgba(15,13,11,.15) 0%, rgba(15,13,11,.85) 100%);
+    opacity:0;
+    transition:opacity .45s ease;
+    z-index:1;
+}
+.mapel-card > *:not(.mapel-bg){ position:relative; z-index:2; }
+.mapel-card:hover .mapel-bg,
+.mapel-card:focus-visible .mapel-bg,
+.mapel-card:active .mapel-bg{ opacity:1; transform:scale(1); }
+.mapel-card:hover::after,
+.mapel-card:focus-visible::after,
+.mapel-card:active::after{ opacity:1; }
+.mapel-card h3{ transition:color .3s; }
+.mapel-card:hover h3{ color:#f2c14e; }
+
+/* HP/tablet (tidak ada hover): gambar tampil samar supaya tetap terlihat */
+@media (hover:none){
+    .mapel-bg{ opacity:.35; transform:scale(1); }
+    .mapel-card::after{ opacity:1; }
+}
+html[data-theme=light] .mapel-card:hover h3{ color:#f2c14e; }

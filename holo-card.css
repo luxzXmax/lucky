@@ -1,0 +1,58 @@
+/* HoloCard (versi vanilla) — tilt 3D + foil holografik + glare.
+   Dipasang otomatis oleh holo-card.js ke: .project, .card, .post-card */
+.holo.holo {
+  --hc-rx: 0deg; --hc-ry: 0deg;
+  --hc-mx: 50%;  --hc-my: 50%;
+  --hc-o: 0; --hc-lift: 0px; --hc-scale: 1;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  transform: perspective(800px) translateY(var(--hc-lift)) rotateX(var(--hc-rx)) rotateY(var(--hc-ry)) scale(var(--hc-scale));
+  transition: border-color .3s, box-shadow .3s;   /* transform dianimasikan JS (spring) */
+  will-change: transform;
+  -webkit-tap-highlight-color: transparent;
+}
+.holo.holo:hover,
+.holo.holo.holo-on {
+  transform: perspective(800px) translateY(var(--hc-lift)) rotateX(var(--hc-rx)) rotateY(var(--hc-ry)) scale(var(--hc-scale));
+  border-color: #f2c14e;
+  box-shadow: 0 18px 40px rgba(0,0,0,.45), 0 0 24px rgba(242,193,78,.25);
+}
+
+.holo.holo::before,
+.holo.holo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;   /* slider, zoom foto, dan klik tetap jalan */
+  border-radius: inherit;
+  transition: opacity .25s;
+}
+/* Foil "bursts": pelangi sunburst yang bergeser mengikuti kursor */
+.holo.holo::before {
+  opacity: calc(var(--hc-o) * .55);
+  background:
+    repeating-conic-gradient(from 0deg at var(--hc-mx) var(--hc-my),
+      rgba(255,60,120,.55) 0deg, rgba(255,200,60,.5) 20deg,
+      rgba(60,255,160,.5) 40deg, rgba(60,170,255,.55) 60deg,
+      rgba(170,90,255,.55) 80deg, rgba(255,60,120,.55) 100deg),
+    linear-gradient(115deg, transparent 20%, rgba(255,255,255,.35) 45%, transparent 70%);
+  mix-blend-mode: color-dodge;
+  filter: saturate(1.3) contrast(1.1) brightness(.85);
+}
+/* Glare + kilau halus */
+.holo.holo::after {
+  opacity: calc(var(--hc-o) * .6);
+  background:
+    radial-gradient(circle at var(--hc-mx) var(--hc-my), rgba(255,255,255,.55), rgba(255,255,255,0) 45%),
+    repeating-radial-gradient(circle at var(--hc-mx) var(--hc-my), rgba(255,255,255,0) 0 6px, rgba(255,255,255,.12) 7px 8px);
+  mix-blend-mode: overlay;
+}
+
+.holo.holo:focus-visible { outline: 2px solid #f2c14e; outline-offset: 3px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .holo.holo, .holo.holo:hover { transform: none; }
+  .holo.holo::before { opacity: calc(var(--hc-o) * .4); }
+}

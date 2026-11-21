@@ -1,0 +1,76 @@
+/* Orbit Images — lightweight vanilla JS/CSS adaptation for this static HTML portfolio.
+   Inspired by React Bits OrbitImages by Dominik Koch. */
+.profile-orbit-stage {
+  position: relative;
+  width: 340px;
+  height: 300px;
+  flex: 0 0 340px;
+  display: grid;
+  place-items: center;
+  isolation: isolate;
+  margin: 0 auto 18px;
+}
+.profile-orbit-ring {
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(242,193,78, .22);
+  border-radius: 50%;
+  animation: profileOrbitSpin 30s linear infinite;
+}
+.profile-orbit-ring::before {
+  content: "";
+  position: absolute;
+  inset: 16px 30px;
+  border: 1px dashed rgba(242,193,78, .18);
+  border-radius: 50%;
+}
+.profile-orbit-ring img {
+  position: absolute;
+  width: 58px;
+  height: 58px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid rgba(100, 160, 255, .85);
+  box-shadow: 0 5px 20px rgba(0,0,0,.35);
+  background: #151b2b;
+}
+.profile-orbit-ring img:nth-child(1) { left: 50%; top: -29px; transform: translateX(-50%); }
+.profile-orbit-ring img:nth-child(2) { right: 8%; top: 13%; }
+.profile-orbit-ring img:nth-child(3) { right: 8%; bottom: 13%; }
+.profile-orbit-ring img:nth-child(4) { left: 50%; bottom: -29px; transform: translateX(-50%); }
+.profile-orbit-ring img:nth-child(5) { left: 8%; bottom: 13%; }
+.profile-orbit-ring img:nth-child(6) { left: 8%; top: 13%; }
+.profile-orbit-stage .about-photo {
+  position: relative;
+  z-index: 2;
+  width: 190px;
+  height: 190px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid rgba(242,193,78,.9);
+  box-shadow: 0 0 0 8px rgba(242,193,78,.08), 0 12px 38px rgba(0,0,0,.38);
+}
+.profile-orbit-stage .about-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+@keyframes profileOrbitSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .profile-orbit-ring { animation: none; }
+}
+@media (max-width: 700px) {
+  .profile-orbit-stage {
+    width: min(320px, 88vw);
+    height: 270px;
+    flex-basis: min(320px, 88vw);
+    margin-bottom: 10px;
+  }
+  .profile-orbit-ring img { width: 48px; height: 48px; }
+  .profile-orbit-stage .about-photo { width: 165px; height: 165px; }
+}

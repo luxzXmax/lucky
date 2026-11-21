@@ -1,0 +1,105 @@
+/* MaskedHeading: judul yang hurufnya menampilkan video/gambar */
+
+/* Setelah JS aktif, matikan gaya gradient pelangi bawaan h1 supaya tidak bentrok */
+.mh-ready {
+  background: none;
+  -webkit-background-clip: border-box;
+  background-clip: border-box;
+  animation: none;
+  color: inherit;
+  position: relative;
+}
+
+/* teks asli tetap ada untuk screen reader & SEO, tapi tidak terlihat */
+.mh-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.mh-stage {
+  position: relative;
+  display: block;
+  max-width: 100%;
+  /* bayangan mengikuti bentuk huruf supaya tetap terbaca di atas background */
+  filter: drop-shadow(0 6px 22px rgba(0, 0, 0, .45));
+  --mh-dur: 1.2s;
+  --mh-ease: cubic-bezier(.2, .8, .2, 1);
+}
+
+.mh-media {
+  position: absolute;
+  inset: 0;
+  display: block;
+  overflow: visible;
+}
+
+.mh-media-inner {
+  position: absolute;
+  display: block;
+  will-change: transform;
+}
+
+.mh-el {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+/* sorotan cahaya yang mengikuti kursor */
+.mh-spot {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .35s ease;
+  mix-blend-mode: soft-light;
+  background: radial-gradient(circle var(--mh-r, 180px) at var(--mh-x, 50%) var(--mh-y, 50%),
+      rgba(255, 255, 255, .95), rgba(255, 255, 255, 0) 70%);
+}
+
+.mh-svg {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+.mh-svg text { white-space: pre; }
+.mh-outline.mh-off { display: none; }
+
+/* ---------- reveal ---------- */
+.mh-stage[data-reveal="scale"],
+.mh-stage[data-reveal="rise"],
+.mh-stage[data-reveal="blur"],
+.mh-stage[data-reveal="wipe"],
+.mh-stage[data-reveal="fade"] {
+  opacity: 0;
+  transition: opacity var(--mh-dur) var(--mh-ease),
+              transform var(--mh-dur) var(--mh-ease),
+              filter var(--mh-dur) var(--mh-ease),
+              clip-path var(--mh-dur) var(--mh-ease);
+}
+.mh-stage[data-reveal="scale"] { transform: scale(.7); transform-origin: left center; }
+.mh-stage[data-reveal="rise"]  { transform: translateY(60px); }
+.mh-stage[data-reveal="blur"]  { filter: blur(18px) drop-shadow(0 6px 22px rgba(0, 0, 0, .45)); }
+.mh-stage[data-reveal="wipe"]  { clip-path: inset(0 100% 0 0); }
+
+.mh-stage.mh-in {
+  opacity: 1;
+  transform: none;
+  filter: drop-shadow(0 6px 22px rgba(0, 0, 0, .45));
+  clip-path: inset(-20% -20% -20% -20%);
+}
+.mh-stage.mh-instant { transition: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .mh-stage { transition: none !important; }
+}

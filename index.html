@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://www.youtube.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; media-src 'self' blob: https:; connect-src 'self' https: wss:; frame-src https://open.spotify.com https://www.youtube.com https://w.soundcloud.com; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<script src="protect.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>FARUQ | Portfolio</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:Arial, sans-serif;
+    background:#0f0d0b;
+    color:white;
+    overflow-x:hidden;
+}
+
+/* BACKGROUND VIDEO (Live Wallpaper) */
+.bg-video{
+    position:fixed;
+    inset:0;
+    z-index:-3;
+
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+
+    filter:brightness(.5) contrast(1.05);
+}
+
+/* DARK OVERLAY */
+.overlay{
+    position:fixed;
+    inset:0;
+    z-index:-2;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(0,0,0,.88) 0%,
+            rgba(0,0,0,.6) 40%,
+            rgba(30,20,8,.2) 100%
+        );
+}
+
+/* BLUE LIGHT */
+.glow{
+    position:fixed;
+    width:350px;
+    height:350px;
+
+    background:#f2c14e;
+    filter:blur(150px);
+    opacity:.18;
+
+    right:-100px;
+    bottom:-100px;
+
+    z-index:-1;
+
+    animation:glowMove 8s infinite alternate ease-in-out;
+}
+
+@keyframes glowMove{
+    from{
+        transform:translate(0,0);
+    }
+
+    to{
+        transform:translate(-100px,-80px);
+    }
+}
+
+/* NAVBAR */
+nav{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+
+    padding:25px 6%;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    z-index:10;
+
+    background:rgba(0,0,0,.15);
+    backdrop-filter:blur(8px);
+}
+
+.logo{
+    font-size:25px;
+    font-weight:bold;
+}
+
+.logo span{
+    color:#f2c14e;
+}
+
+nav ul{
+    display:flex;
+    gap:40px;
+    list-style:none;
+}
+
+nav a{
+    position:relative;
+    color:white;
+    text-decoration:none;
+    font-size:15px;
+    padding-bottom:6px;
+    transition:.3s;
+}
+
+nav a::after{
+    content:"";
+    position:absolute;
+    left:0;
+    bottom:0;
+    width:0%;
+    height:2px;
+    background:#f2c14e;
+    transition:.3s;
+}
+
+nav a:hover{
+    color:#f2c14e;
+}
+
+nav a:hover::after,
+nav a.active::after{
+    width:100%;
+}
+
+nav a.active{
+    color:#f2c14e;
+}
+
+.nav-wrap{
+    position:relative;
+}
+
+/* HOME */
+.home{
+    min-height:100vh;
+
+    display:flex;
+    align-items:center;
+
+    padding:120px 12% 60px;
+}
+
+.content{
+    max-width:650px;
+
+    animation:appear 1.3s ease;
+}
+
+@keyframes appear{
+    from{
+        opacity:0;
+        transform:translateY(40px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+.small-title{
+    color:#f2c14e;
+    font-size:22px;
+    margin-bottom:10px;
+}
+
+h1{
+    font-size:clamp(55px,8vw,100px);
+    line-height:.95;
+    letter-spacing:-4px;
+
+    background:linear-gradient(90deg,
+        #ff004c, #ff9900, #fff700, #00ff6a,
+        #00d9ff, #7c3cff, #ff004c);
+    background-size:400% 100%;
+
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+
+    animation:rainbowText 8s linear infinite;
+}
+
+@keyframes rainbowText{
+    0%{ background-position:0% 50%; }
+    100%{ background-position:400% 50%; }
+}
+
+h1 span{
+    /* warna sekarang ikut animasi rainbow dari h1 */
+}
+
+.job{
+    font-size:24px;
+    margin-top:25px;
+    margin-bottom:15px;
+}
+
+.description{
+    color:#cbc2ae;
+    max-width:550px;
+    line-height:1.8;
+}
+
+/* BUTTON */
+.nav-hint{
+    margin-top:30px;
+    display:inline-flex;
+    align-items:center;
+    gap:12px;
+
+    padding:12px 20px;
+    border-radius:50px;
+    border:1px solid #f2c14e;
+    background:rgba(242,193,78,.08);
+
+    color:#ece4d3;
+    font-size:14px;
+}
+
+.nav-hint-arrow{
+    display:flex;
+    color:#f2c14e;
+    animation:navHintBounce 1.4s infinite;
+}
+
+@keyframes navHintBounce{
+    0%, 100%{ transform:translateY(0); }
+    50%{ transform:translateY(-6px); }
+}
+
+/* SOCIAL */
+.social{
+    position:fixed;
+    left:35px;
+    top:50%;
+    transform:translateY(-50%);
+
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+.social a{
+    width:45px;
+    height:45px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:50%;
+
+    color:white;
+    text-decoration:none;
+
+    background:rgba(20,20,25,.7);
+    border:1px solid rgba(255,255,255,.15);
+
+    transition:.3s;
+}
+
+.social a:hover{
+    background:#f2c14e;
+    transform:scale(1.1);
+}
+
+/* SCROLL */
+.scroll{
+    position:absolute;
+    bottom:30px;
+    left:50%;
+    transform:translateX(-50%);
+
+    text-align:center;
+    color:#a89f8b;
+    font-size:13px;
+}
+
+.mouse{
+    width:25px;
+    height:40px;
+
+    border:2px solid white;
+    border-radius:15px;
+
+    margin:auto auto 8px;
+
+    position:relative;
+}
+
+.mouse::after{
+    content:"";
+
+    position:absolute;
+    width:4px;
+    height:7px;
+
+    background:white;
+    border-radius:5px;
+
+    top:7px;
+    left:50%;
+
+    transform:translateX(-50%);
+
+    animation:scroll 1.5s infinite;
+}
+
+@keyframes scroll{
+    from{
+        opacity:1;
+        transform:translate(-50%,0);
+    }
+
+    to{
+        opacity:0;
+        transform:translate(-50%,12px);
+    }
+}
+
+/* SECTION */
+section:not(.home){
+    min-height:100vh;
+    padding:120px 10%;
+    background:rgba(15,13,11,.9);
+}
+
+.title{
+    text-align:center;
+    font-size:45px;
+    margin-bottom:50px;
+}
+
+.title span{
+    color:#f2c14e;
+}
+
+.about-wrap{
+    max-width:900px;
+    margin:auto;
+
+    display:flex;
+    align-items:flex-start;
+    justify-content:center;
+    gap:40px;
+    flex-wrap:wrap;
+}
+
+.about-photo{
+    flex-shrink:0;
+    width:240px;
+    aspect-ratio:1/1;
+
+    background:rgba(0,0,0,.3);
+    border:1px solid #3a3329;
+    border-radius:16px;
+    overflow:hidden;
+}
+
+.about-photo img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.about-info{
+    flex:1;
+    min-width:260px;
+    max-width:500px;
+
+    background:rgba(26,22,18,.75);
+    border:1px solid #3a3329;
+    border-radius:16px;
+    padding:24px 28px;
+}
+
+.about-info h3{
+    color:#f2c14e;
+    font-size:22px;
+    margin-bottom:16px;
+}
+
+.about-info ul{
+    list-style:none;
+    margin-bottom:16px;
+}
+
+.about-info li{
+    color:#cbc2ae;
+    line-height:1.9;
+    font-size:15px;
+}
+
+.about-info li b{
+    color:white;
+}
+
+.about-info p{
+    color:#a89f8b;
+    line-height:1.7;
+    font-size:15px;
+}
+
+.skills-wrap{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    margin-bottom:16px;
+}
+
+.skill-block h3{
+    color:#f2c14e;
+    font-size:16px;
+    margin-bottom:8px;
+}
+
+.skill-list{
+    list-style:none;
+    margin:0;
+}
+
+.skill-list li{
+    position:relative;
+    color:#cbc2ae;
+    line-height:1.7;
+    font-size:14px;
+    padding-left:18px;
+}
+
+.skill-list li::before{
+    content:"›";
+    position:absolute;
+    left:0;
+    color:#f2c14e;
+    font-weight:bold;
+}
+
+@media(max-width:700px){
+    .about-wrap{
+        flex-direction:column;
+        align-items:center;
+    }
+}
+
+/* SKILLS */
+.skills{
+    max-width:800px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+}
+
+.skill{
+    padding:25px;
+    background:rgba(26,22,18,.7);
+    border:1px solid #3a3329;
+    border-radius:12px;
+}
+
+.skill h3{
+    margin-bottom:12px;
+}
+
+.bar{
+    height:6px;
+    background:#2a251e;
+    border-radius:10px;
+    overflow:hidden;
+}
+
+.bar div{
+    height:100%;
+    background:#f2c14e;
+}
+
+/* PROJECT */
+.projects{
+    max-width:1000px;
+    margin:auto;
+
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+}
+
+.project{
+    padding:30px;
+    background:rgba(26,22,18,.8);
+    border:1px solid #3a3329;
+    border-radius:12px;
+
+    transition:.3s;
+
+    display:block;
+    text-decoration:none;
+    color:inherit;
+    cursor:pointer;
+}
+
+.project:hover{
+    transform:translateY(-10px);
+    border-color:#f2c14e;
+}
+
+.project-icon{
+    font-size:40px;
+    margin-bottom:20px;
+}
+
+.project p{
+    color:#a89f8b;
+    margin-top:10px;
+}
+
+/* SOSMED */
+.sosmed-grid{
+    max-width:900px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+}
+
+.sosmed-card{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    background:rgba(26,22,18,.8);
+    border:1px solid #3a3329;
+    border-radius:14px;
+    padding:22px 20px;
+    text-decoration:none;
+    color:white;
+    transition:.3s;
+}
+
+.sosmed-card:hover{
+    transform:translateY(-6px);
+    border-color:#f2c14e;
+}
+
+.sosmed-icon{
+    flex-shrink:0;
+    width:54px;
+    height:54px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.sosmed-icon.tiktok{
+    background:#111;
+    color:#25f4ee;
+}
+
+.sosmed-icon.instagram{
+    background:linear-gradient(45deg,#f9ce34,#ee2a7b,#6228d7);
+    color:white;
+}
+
+.sosmed-icon.whatsapp{
+    background:#25d366;
+    color:#0b1a12;
+}
+
+.sosmed-info h3{
+    font-size:16px;
+    margin-bottom:4px;
+}
+
+.sosmed-info p{
+    color:#a89f8b;
+    font-size:13px;
+}
+
+@media(max-width:700px){
+    .sosmed-grid{
+        grid-template-columns:1fr;
+    }
+}
+
+/* CONTACT */
+.contact{
+    text-align:center;
+}
+
+.contact p{
+    color:#a89f8b;
+    margin-bottom:25px;
+}
+
+/* MOBILE */
+@media(max-width:700px){
+
+    nav{
+        padding:18px 5%;
+    }
+
+    .nav-wrap{
+        position:relative;
+        max-width:65vw;
+    }
+
+    .nav-wrap::after{
+        content:"";
+        position:absolute;
+        top:0;
+        right:0;
+        width:28px;
+        height:100%;
+        background:linear-gradient(to right, transparent, rgba(0,0,0,.85));
+        pointer-events:none;
+    }
+
+    nav ul{
+        gap:16px;
+        overflow-x:auto;
+        flex-wrap:nowrap;
+        max-width:100%;
+
+        scrollbar-width:none;
+    }
+
+    nav ul::-webkit-scrollbar{
+        display:none;
+    }
+
+    nav a{
+        font-size:11px;
+        white-space:nowrap;
+        padding-bottom:8px;
+    }
+
+    .logo{
+        font-size:20px;
+    }
+
+    .home{
+        padding:120px 8% 70px;
+    }
+
+    h1{
+        font-size:58px;
+        letter-spacing:-3px;
+    }
+
+    .job{
+        font-size:19px;
+    }
+
+    .description{
+        font-size:14px;
+    }
+
+    .nav-hint{
+        font-size:13px;
+        padding:10px 16px;
+    }
+
+    .social{
+        display:none;
+    }
+
+    .skills{
+        grid-template-columns:1fr;
+    }
+
+    .projects{
+        grid-template-columns:1fr;
+    }
+
+    .title{
+        font-size:35px;
+    }
+
+    section:not(.home){
+        padding:90px 7%;
+    }
+}
+</style>
+<link rel="stylesheet" href="features.css">
+<link rel="stylesheet" href="halftone-reveal.css">
+    <link rel="stylesheet" href="orbit-images.css">
+    <link rel="stylesheet" href="lanyard.css">
+<link rel="stylesheet" href="holo-card.css">
+<link rel="stylesheet" href="masked-heading.css">
+<link rel="stylesheet" href="cubes.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Schibsted+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tampilan.css">
+<link rel="stylesheet" href="intro.css">
+<script>try{if(sessionStorage.getItem('flaIntroSeen')!=='1'||/[?&]intro(=|&|$)/.test(location.search))document.documentElement.classList.add('fla-lock')}catch(e){document.documentElement.classList.add('fla-lock')}</script>
+<noscript><style>#flaIntro{display:none!important}</style></noscript>
+</head>
+
+<body>
+
+<!-- INTRO: layar "Click for Start" -> video -> website (lihat intro.css / intro.js) -->
+<div id="flaIntro" role="dialog" aria-label="Intro portofolio">
+<div class="disc" id="diB"><canvas id="dicv"></canvas></div>
+<div class="disc" id="diA"><div id="dirow"><div id="dien"></div><div id="dibw"><div id="dibd"><img data-l alt=""></div></div></div><div class="dihint">KLIK / TAP UNTUK MASUK</div></div>
+<div class="disc" id="diC"><img class="dilg" data-l alt="Logo"><h1 id="ditt"></h1><p id="disb"></p><div class="dibt"><a id="digo" href="#">MASUK</a><button id="dirp">↻ ULANGI</button></div></div>
+<div class="disc" id="difl"></div>
+<button id="disk">LEWATI</button>
+</div>
+<script src="intro.js"></script>
+
+
+<!-- WALLPAPER: Cubes (React Bits). Video lama disimpan di bawah sebagai komentar. -->
+<div class="cubes-wallpaper" id="cubesWallpaper"></div>
+<!--
+<video class="bg-video" id="bgVideo" muted loop playsinline preload="none" poster="bg-poster.jpg">
+    <source src="MOBILE-Yuta-Jujutsu-Kaisen-1.mp4" type="video/mp4">
+</video>
+-->
+<div class="overlay"></div>
+<div class="glow"></div>
+
+
+<!-- NAVBAR -->
+<nav>
+
+    <div class="logo">
+        FARUQ<span>.</span>
+    </div>
+
+    <div class="nav-wrap">
+    <ul>
+        <li><a href="#home">HOME</a></li>
+        <li><a href="#about">ABOUT</a></li>
+        <li><a href="#school">TUGAS & PRAKTIK</a></li>
+        <li><a href="#karya-tulisan">KARYA TULISAN</a></li>
+        <li><a href="#projects">PROJECT</a></li>
+        <li><a href="#prestasi">PRESTASI</a></li>
+        <li><a href="#sertifikat">SERTIFIKAT</a></li>
+        <li><a href="#pengalaman">PENGALAMAN</a></li>
+        <li><a href="#sosmed">SOSMED</a></li>
+        <li><a href="#contact">CONTACT</a></li>
+    </ul>
+    </div>
+
+</nav>
+
+
+<!-- SOCIAL -->
+<div class="social">
+
+    <a href="https://instagram.com/kobow_1" target="_blank" rel="noopener noreferrer">IG</a>
+    <a href="https://wa.me/6283875078276" target="_blank" rel="noopener noreferrer">WA</a>
+
+</div>
+
+
+<!-- HOME -->
+<section class="home" id="home">
+
+    <!-- OBJEK HERO: kok badminton melayang + tulisan melingkar (dekorasi, ikut gerak kursor) -->
+    <div class="hero-object" id="heroObject" aria-hidden="true">
+        <svg class="ho-ring" viewBox="0 0 400 400">
+            <defs><path id="hoCircle" d="M200,200 m-176,0 a176,176 0 1,1 352,0 a176,176 0 1,1 -352,0"/></defs>
+            <circle cx="200" cy="200" r="196" fill="none" stroke="currentColor" stroke-opacity=".25"/>
+            <circle cx="200" cy="200" r="150" fill="none" stroke="currentColor" stroke-opacity=".12"/>
+            <text><textPath href="#hoCircle" startOffset="0">SMK NEGERI 5 SUKOHARJO ✦ WEB PORTFOLIO ✦ BADMINTON ✦ GAME ✦ MUSIK ✦ </textPath></text>
+        </svg>
+        <div class="ho-float">
+            <svg class="ho-shuttle" viewBox="0 0 200 260">
+                <defs>
+                    <linearGradient id="hoSkirt" x1="0" y1="1" x2="0" y2="0">
+                        <stop offset="0" stop-color="#ece4d3" stop-opacity=".95"/>
+                        <stop offset="1" stop-color="#ece4d3" stop-opacity=".25"/>
+                    </linearGradient>
+                    <radialGradient id="hoCork" cx=".35" cy=".3" r=".8">
+                        <stop offset="0" stop-color="#ffe29a"/><stop offset="1" stop-color="#c9902a"/>
+                    </radialGradient>
+                </defs>
+                <path d="M82,188 L118,188 L182,44 Q100,20 18,44 Z" fill="url(#hoSkirt)"/>
+                <g stroke="#14110e" stroke-opacity=".45" stroke-width="1.6" fill="none">
+                    <path d="M86,188 L28,46"/><path d="M92,188 L52,38"/><path d="M98,188 L76,32"/>
+                    <path d="M100,188 L100,31"/>
+                    <path d="M102,188 L124,32"/><path d="M108,188 L148,38"/><path d="M114,188 L172,46"/>
+                </g>
+                <ellipse cx="100" cy="40" rx="82" ry="14" fill="none" stroke="#ece4d3" stroke-width="3"/>
+                <path d="M54,118 Q100,134 146,118" fill="none" stroke="#f2c14e" stroke-width="3"/>
+                <circle cx="100" cy="214" r="34" fill="url(#hoCork)"/>
+                <ellipse cx="100" cy="190" rx="20" ry="5" fill="#14110e" fill-opacity=".25"/>
+            </svg>
+        </div>
+    </div>
+
+    <div class="content">
+
+        <div class="small-title">
+            Halo, Saya
+        </div>
+
+        <h1>
+            Faruq Lucky<br>
+            <span>Ardhatha</span>
+        </h1>
+
+        <div class="job">
+            Web portfolio
+        </div>
+
+        <p class="description">
+            Saya adalah murid dari SMK 5 Sukoharjo.
+            Hobi saya adalah badminton dan bermain game.
+            Harapan saya setelah lulus ingin menjadi orang sukses,
+            dan dapat membanggakan orang tua saya.
+        </p>
+
+        <div class="nav-hint">
+            <div class="nav-hint-arrow">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 19V5"/>
+                    <path d="M5 12l7-7 7 7"/>
+                </svg>
+            </div>
+            <span>Cek menu navigasi di atas ya!</span>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- SCROLL -->
+<div class="scroll">
+
+    <div class="mouse"></div>
+
+    Scroll Down
+
+</div>
+
+
+<!-- ABOUT -->
+<section id="about">
+
+    <h2 class="title"><small class="idx">01</small>
+        About <span>Me</span>
+    </h2>
+
+    <div class="about-wrap">
+
+        <!-- Lanyard 3D: kartu badge dengan foto profil + tag @lucky (seret / lempar / klik untuk balik) -->
+        <div class="lanyard" data-lanyard
+             data-front="foto-saya.jpg"
+             data-tag="@lucky"
+             data-name="Faruq Lucky Ardhatha"
+             data-subtitle="SMK Negeri 5 Sukoharjo"
+             data-focus-y="0.5"
+             aria-label="Kartu badge 3D dengan foto profil Faruq Lucky Ardhatha, tag @lucky. Seret untuk menggoyang, klik untuk membalik.">
+            <div class="lanyard-fallback">
+                <img loading="lazy" src="foto-saya.jpg" alt="Foto Faruq Lucky Ardhatha">
+            </div>
+        </div>
+
+        <!-- Versi lama (orbit images + halftone), disimpan kalau mau dikembalikan:
+        <div class="profile-orbit-stage" aria-label="Foto profil dengan galeri gambar berputar">
+            <div class="profile-orbit-ring" aria-hidden="true">
+                <img src="https://picsum.photos/300/300?grayscale&random=1" alt="" loading="lazy">
+                <img src="https://picsum.photos/300/300?grayscale&random=2" alt="" loading="lazy">
+                <img src="https://picsum.photos/300/300?grayscale&random=3" alt="" loading="lazy">
+                <img src="https://picsum.photos/300/300?grayscale&random=4" alt="" loading="lazy">
+                <img src="https://picsum.photos/300/300?grayscale&random=5" alt="" loading="lazy">
+                <img src="https://picsum.photos/300/300?grayscale&random=6" alt="" loading="lazy">
+            </div>
+            <div class="about-photo">
+                <img loading="lazy" src="foto-saya.jpg" alt="Foto Faruq Lucky Ardhatha">
+            </div>
+        </div>
+
+        -->
+
+        <div class="about-info">
+
+            <ul>
+                <li><b>Nama:</b> Faruq Lucky Ardhatha</li>
+                <li><b>Tanggal Lahir:</b> 18 November 2010</li>
+                <li><b>Alamat:</b> Lembuputih, Kec. Karangjoho, Kab. Klaten</li>
+                <li><b>Hobi:</b> Bermain game, badminton, dan mendengarkan musik</li>
+                <li><b>Moto:</b> Jika orang lain bisa maka saya juga harus bisa</li>
+                <li><b>Asal Sekolah:</b> SMK Negeri 5 Sukoharjo</li>
+            </ul>
+
+            <h3>Riwayat Sekolah</h3>
+            <ul class="school-history">
+                <li><b>TK:</b> TK Aisyiyah Tawangsari</li>
+                <li><b>SD/MI:</b> MI Pojok</li>
+                <li><b>SMP/MTs:</b> MTs Muhammadiyah Tawangsari</li>
+                <li><b>SMK:</b> SMK Negeri 5 Sukoharjo <span class="sh-now">Sedang menempuh pendidikan</span></li>
+            </ul>
+
+            <div class="skills-wrap">
+
+                <div class="skill-block">
+                    <h3>Soft Skill Saya</h3>
+                    <ul class="skill-list">
+                        <li>Cepat belajar dan suka mencoba hal baru</li>
+                        <li>Mau menerima kritik dan belajar dari kesalahan</li>
+                    </ul>
+                </div>
+
+                <div class="skill-block">
+                    <h3>Hard Skill Saya</h3>
+                    <ul class="skill-list">
+                        <li>Menggunakan AI untuk membantu mencari ide dan menyelesaikan tugas</li>
+                        <li>Dasar HTML, CSS, dan JavaScript</li>
+                        <li>Membuat dan mengedit website sederhana</li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <p>
+                Saya orangnya suka mencoba hal-hal baru
+                dan mencari pengalaman yang berbeda.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- SCHOOL -->
+<section id="school">
+
+    <h2 class="title"><small class="idx">02</small>
+        Project <span>School SMK</span>
+    </h2>
+
+    <div class="projects">
+
+        <a href="school.html" class="project">
+
+            <div class="project-icon">→</div>
+
+            <h3>Kelas X</h3>
+
+            <p>
+                Tugas Sekolah Kelas X
+            </p>
+
+        </a>
+
+        <a href="school-xi.html" class="project">
+
+            <div class="project-icon">→</div>
+
+            <h3>Kelas XI</h3>
+
+            <p>
+                Tugas Sekolah Kelas XI
+            </p>
+
+        </a>
+
+        <a href="school-xii.html" class="project">
+
+            <div class="project-icon">→</div>
+
+            <h3>Kelas XII</h3>
+
+            <p>
+                Tugas Sekolah Kelas XII
+            </p>
+
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- KARYA TULISAN -->
+<section id="karya-tulisan">
+
+    <h2 class="title"><small class="idx">03</small>
+        Karya <span>Tulisan</span>
+    </h2>
+
+    <div class="projects" style="grid-template-columns:minmax(0,300px); justify-content:center;">
+
+        <a href="karya-tulisan.html" class="project">
+
+            <div class="project-icon">→</div>
+
+            <h3>Karya Tulisan</h3>
+
+            <p>
+                Makalah, artikel, essay, dan laporan saya.
+            </p>
+
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- PROJECTS -->
+<section id="projects">
+
+    <h2 class="title"><small class="idx">04</small>
+        My <span>Project/Karya</span>
+    </h2>
+
+    <div class="projects" style="grid-template-columns:minmax(0,300px); justify-content:center;">
+
+        <a href="project-1.html" class="project">
+
+            <div class="project-icon">→</div>
+
+            <h3>Project dan Karya</h3>
+
+            <p>
+                Kumpulan project dan karya saya.
+            </p>
+
+        </a>
+
+    </div>
+
+</section>
+
+<!-- PRESTASI -->
+<section id="prestasi">
+
+    <h2 class="title"><small class="idx">05</small>
+        My <span>Prestasi</span>
+    </h2>
+
+    <div class="projects" style="grid-template-columns:minmax(0,300px); justify-content:center;">
+
+        <a href="project-3.html" class="project">
+
+            <div class="project-icon">→</div>
+
+            <h3>Prestasi</h3>
+
+            <p>
+                Kumpulan prestasi dan pencapaian saya.
+            </p>
+
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- SERTIFIKAT -->
+<section id="sertifikat">
+
+    <h2 class="title"><small class="idx">06</small>
+        <span>Sertifikat</span>
+    </h2>
+
+    <div class="projects" style="grid-template-columns:minmax(0,300px); justify-content:center;">
+
+        <a href="sertifikat.html" class="project">
+
+            <div class="project-icon">→</div>
+
+            <h3>Sertifikat</h3>
+
+            <p>
+                Sertifikat resmi dan pelatihan yang saya ikuti.
+            </p>
+
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- PENGALAMAN -->
+<section id="pengalaman">
+
+    <h2 class="title"><small class="idx">07</small>
+        <span>Pengalaman</span>
+    </h2>
+
+    <div class="projects" style="grid-template-columns:minmax(0,300px); justify-content:center;">
+
+        <a href="pengalaman.html" class="project">
+
+            <div class="project-icon">→</div>
+
+            <h3>Pengalaman</h3>
+
+            <p>
+                PKL/Magang, organisasi, dan kegiatan IT saya.
+            </p>
+
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- SOSMED -->
+<section id="sosmed">
+
+    <h2 class="title"><small class="idx">08</small>
+        <span>Sosmed</span>
+    </h2>
+
+    <div class="sosmed-grid">
+
+        <a class="sosmed-card" href="https://www.tiktok.com/tag/kubo1913" target="_blank" rel="noopener">
+            <div class="sosmed-icon tiktok">
+                <svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor"><path d="M16.6 5.82s.51.5 0 0A4.278 4.278 0 0 1 15.54 3h-3.09v12.4a2.592 2.592 0 0 1-2.59 2.5c-1.42 0-2.6-1.16-2.6-2.6c0-1.72 1.66-3.01 3.37-2.48V9.66c-3.45-.46-6.47 2.22-6.47 5.64c0 3.33 2.76 5.7 5.69 5.7c3.14 0 5.69-2.55 5.69-5.7V9.01a7.35 7.35 0 0 0 4.32 1.38V7.3s-1.88.09-3.26-1.48Z"/></svg>
+            </div>
+            <div class="sosmed-info">
+                <h3>TikTok</h3>
+                <p>#kubo1913</p>
+            </div>
+        </a>
+
+        <a class="sosmed-card" href="https://instagram.com/kobow_1" target="_blank" rel="noopener">
+            <div class="sosmed-icon instagram">
+                <svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor"><path d="M12 2c2.717 0 3.056.01 4.122.06c1.065.05 1.79.217 2.428.465c.66.254 1.216.598 1.772 1.153a4.908 4.908 0 0 1 1.153 1.772c.247.637.415 1.363.465 2.428c.047 1.066.06 1.405.06 4.122c0 2.717-.01 3.056-.06 4.122c-.05 1.065-.218 1.79-.465 2.428a4.883 4.883 0 0 1-1.153 1.772a4.915 4.915 0 0 1-1.772 1.153c-.637.247-1.363.415-2.428.465c-1.066.047-1.405.06-4.122.06c-2.717 0-3.056-.01-4.122-.06c-1.065-.05-1.79-.218-2.428-.465a4.89 4.89 0 0 1-1.772-1.153a4.904 4.904 0 0 1-1.153-1.772c-.248-.637-.415-1.363-.465-2.428C2.013 15.056 2 14.717 2 12c0-2.717.01-3.056.06-4.122c.05-1.066.217-1.79.465-2.428a4.88 4.88 0 0 1 1.153-1.772A4.897 4.897 0 0 1 5.45 2.525c.638-.248 1.362-.415 2.428-.465C8.944 2.013 9.283 2 12 2Zm0 5a5 5 0 1 0 0 10a5 5 0 0 0 0-10Zm0 8.25a3.25 3.25 0 1 1 0-6.5a3.25 3.25 0 0 1 0 6.5Zm6.4-8.45a1.2 1.2 0 1 1-2.4 0a1.2 1.2 0 0 1 2.4 0Z"/></svg>
+            </div>
+            <div class="sosmed-info">
+                <h3>Instagram</h3>
+                <p>@kobow_1</p>
+            </div>
+        </a>
+
+        <a class="sosmed-card" href="https://wa.me/6283875078276" target="_blank" rel="noopener">
+            <div class="sosmed-icon whatsapp">
+                <svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor"><path d="M12.01 2C6.5 2 2 6.48 2 11.99c0 1.86.5 3.61 1.44 5.16L2 22l4.96-1.4a10.05 10.05 0 0 0 5.05 1.36h.01c5.5 0 10-4.48 10-9.99C22.02 6.48 17.5 2 12.01 2Zm0 18.15h-.01c-1.53 0-3.02-.41-4.32-1.19l-.31-.18l-3.19.9l.86-3.11l-.2-.32a8.14 8.14 0 0 1-1.26-4.36c0-4.51 3.68-8.19 8.2-8.19c2.19 0 4.24.85 5.79 2.4a8.14 8.14 0 0 1 2.4 5.8c0 4.51-3.68 8.25-8.19 8.25Zm4.48-6.16c-.24-.12-1.44-.71-1.66-.79c-.22-.08-.39-.12-.55.12c-.16.24-.63.79-.78.95c-.14.16-.29.18-.53.06c-.24-.12-1.02-.38-1.94-1.2a7.29 7.29 0 0 1-1.35-1.68c-.14-.24-.02-.37.1-.49c.11-.11.24-.29.36-.43c.12-.14.16-.24.24-.4c.08-.16.04-.3-.02-.42c-.06-.12-.55-1.32-.75-1.81c-.2-.48-.4-.41-.55-.42h-.47c-.16 0-.42.06-.64.3c-.22.24-.85.83-.85 2.02c0 1.19.87 2.34.99 2.5c.12.16 1.71 2.61 4.14 3.66c.58.25 1.03.4 1.38.51c.58.18 1.11.16 1.53.1c.47-.07 1.44-.59 1.64-1.16c.2-.57.2-1.06.14-1.16c-.06-.1-.22-.16-.46-.28Z"/></svg>
+            </div>
+            <div class="sosmed-info">
+                <h3>WhatsApp</h3>
+                <p>0838-7507-8276</p>
+            </div>
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- CONTACT -->
+<section id="contact">
+
+    <div class="contact">
+
+        <h2 class="title"><small class="idx">09</small>
+            Hubungi <span>Saya</span>
+        </h2>
+
+        <p>
+            Kamu bisa menghubungi saya melalui:
+        </p>
+
+        <div class="buttons"
+             style="justify-content:center">
+
+            <a class="btn btn-main"
+               href="https://instagram.com/kobow_1" target="_blank" rel="noopener noreferrer">
+                Instagram
+            </a>
+
+            <a class="btn"
+               href="https://wa.me/6283875078276" target="_blank" rel="noopener noreferrer">
+                WhatsApp
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<script>
+// Menandai menu navigasi yang aktif sesuai section yang sedang dilihat
+const navLinks = document.querySelectorAll('nav a');
+const sections = Array.from(navLinks)
+    .map(link => document.querySelector(link.getAttribute('href')))
+    .filter(Boolean);
+
+function updateActiveNav(){
+    let current = sections[0];
+
+    sections.forEach(sec => {
+        const rect = sec.getBoundingClientRect();
+        if(rect.top <= 120){
+            current = sec;
+        }
+    });
+
+    navLinks.forEach(link => {
+        link.classList.toggle('active', link.getAttribute('href') === '#' + current.id);
+    });
+}
+
+window.addEventListener('scroll', updateActiveNav);
+updateActiveNav();
+
+// Auto scroll menu aktif ke tengah area terlihat (khusus mobile)
+navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+        setTimeout(() => {
+            link.scrollIntoView({ behavior:'smooth', inline:'center', block:'nearest' });
+        }, 300);
+    });
+});
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script src="musicplayer.js"></script>
+<script src="features.js"></script>
+
+<script src="halftone-reveal.js"></script>
+<script>
+// Foto di bagian About: halftone yang berubah jadi foto asli saat disentuh kursor
+(function(){
+    var host = document.querySelector('.about-photo');
+    if(!host || !window.HalftoneReveal) return;
+
+    var instance = HalftoneReveal.mount(host, {
+        src: 'foto-saya.jpg',
+        mode: 'mono',
+        shape: 'dot',
+        cellSize: 4,
+        angle: 45,
+        inkColor: '#f4f1ea',
+        paperColor: '#120f17',
+        revealRadius: 90,
+        // kalau gambar gagal dimuat, tampilkan foto biasa
+        onError: function(){ if(instance) instance.destroy(); }
+    });
+})();
+</script>
+<script src="masked-heading.js"></script>
+<script>
+// Judul nama di hero: huruf-hurufnya jadi "jendela" ke video (efek MaskedHeading)
+(function(){
+    var h = document.querySelector('.home h1');
+    if(!h || !window.MaskedHeading) return;
+    MaskedHeading.mount(h, {
+        mediaType: 'video',
+        src: 'MOBILE-Yuta-Jujutsu-Kaisen-1.mp4',
+        poster: 'bg-poster.jpg',
+        fillScale: 1.3,
+        brightness: 1.7,
+        saturation: 1.2,
+        parallax: 34,
+        reveal: 'scale',
+        trigger: 'view',
+        spotlight: true,
+        spotlightRadius: 180,
+        outline: true
+    });
+})();
+</script>
+<script src="orbit-images.js"></script>
+<script type="module" src="lanyard.js"></script>
+<script src="holo-card.js"></script>
+<script src="cubes.js"></script>
+<script>
+// Wallpaper Cubes (React Bits) — ubah angka di sini untuk menyesuaikan tampilan
+window.cubesWallpaper = Cubes(document.getElementById('cubesWallpaper'), {
+    gridSize: 10,
+    faceColor: '#14110e',
+    edgeColor: '#4a4234',
+    rippleColor: '#f2c14e',
+    maxAngle: 45,
+    radius: 3
+});
+</script>
+<script>
+// Objek hero ikut bergerak halus mengikuti kursor
+(function(){
+  var o=document.getElementById('heroObject'); if(!o) return;
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches||!window.matchMedia('(pointer:fine)').matches) return;
+  var tx=0,ty=0,cx=0,cy=0;
+  window.addEventListener('pointermove',function(e){tx=(e.clientX/innerWidth-.5)*34;ty=(e.clientY/innerHeight-.5)*24;},{passive:true});
+  (function loop(){cx+=(tx-cx)*.06;cy+=(ty-cy)*.06;o.style.setProperty('--px',cx.toFixed(2)+'px');o.style.setProperty('--py',cy.toFixed(2)+'px');requestAnimationFrame(loop);})();
+})();
+</script>
+<!-- GSAP + ScrollTrigger (CDN) untuk animasi foto HUD -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+</body>
+</html>

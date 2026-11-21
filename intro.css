@@ -1,0 +1,47 @@
+/* INTRO: ENTER -> jalan malam + logo naga -> WELCOME -> website (alur diatur intro.js) */
+
+.disc{position:absolute;inset:0}
+#flaIntro{position:fixed;inset:0;overflow:hidden;background:#000}
+#diB{opacity:0;transition:opacity .9s}#diB.on{opacity:1}
+#diB canvas{width:100%;height:100%;display:block}
+#diB::after,#diA::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 45%,transparent 35%,#000d 100%)}
+#diA{background:#1b1b1b;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center}
+#diA.zoom{opacity:0;transition:opacity .7s .7s}
+#dirow{position:relative;z-index:1;display:flex;align-items:center}
+#dirow{will-change:transform}#diA.zoom #dirow{transition:transform 1.4s cubic-bezier(.6,0,.9,.45);transform:scale(24)}
+#dien{font-weight:900;color:#f2f2f2;font-size:clamp(44px,12vw,104px);letter-spacing:.04em;text-shadow:0 4px 18px #000a;animation:en 1.2s cubic-bezier(.2,.8,.2,1) both}
+@keyframes en{from{opacity:0;letter-spacing:.35em;filter:blur(10px)}}
+#dibw{margin-left:-1vw;margin-top:9vh;animation:dr 1s .6s cubic-bezier(.3,1.5,.5,1) both;transition:transform .16s}
+#dibw.press{transform:scale(.86)}
+@keyframes dr{from{opacity:0;transform:translateY(-60px) scale(1.7)}}
+#dibd{width:clamp(96px,22vw,168px);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;border:5px solid #e9eef2;background:radial-gradient(circle at 35% 30%,#12324f,#030a12 70%);box-shadow:0 18px 30px #000c,0 0 46px #35d8ff66,inset 0 0 22px #35d8ff55;animation:fl 3s 1.6s ease-in-out infinite}
+@keyframes fl{50%{transform:translateY(-8px);box-shadow:0 26px 34px #000c,0 0 70px #35d8ffaa,inset 0 0 28px #35d8ff88}}
+#dibd img{width:78%;filter:drop-shadow(0 0 6px #35d8ffcc)}
+.dihint{position:absolute;z-index:1;bottom:12vh;color:#9aa;font:700 12px system-ui;letter-spacing:.35em;animation:bk 1.6s 1.8s infinite both}
+@keyframes bk{0%,100%{opacity:.15}50%{opacity:.9}}
+#diC{background:#ececee;color:#0b0b10;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2vh;opacity:0;visibility:hidden;transition:opacity .8s}
+#diC.on{opacity:1;visibility:visible}
+#diC .dilg{width:min(56vw,380px);filter:invert(1) drop-shadow(0 10px 18px #0003)}
+#diC.on .dilg{animation:li 1.6s cubic-bezier(.2,.8,.2,1) both}
+@keyframes li{from{opacity:0;transform:scale(.55);filter:invert(1) blur(14px)}}
+#ditt{font-size:clamp(30px,8vw,64px);letter-spacing:.08em;overflow:hidden;padding:.1em .2em}
+#ditt span{display:inline-block;transform:translateY(115%)}
+#diC.on #ditt span{animation:up 1s calc(.8s + var(--i)*.07s) cubic-bezier(.2,.9,.2,1) forwards}
+@keyframes up{to{transform:none}}
+#disb{font:700 clamp(11px,2.4vw,15px) system-ui;letter-spacing:.5em;color:#555;opacity:0}
+#diC.on #disb{animation:fi .8s 1.5s forwards}
+.dibt{display:flex;gap:12px;margin-top:2vh;opacity:0}
+#diC.on .dibt{animation:fi .8s 1.9s forwards}
+@keyframes fi{to{opacity:1}}
+.dibt a,.dibt button{font:700 13px system-ui;letter-spacing:.2em;padding:13px 26px;border-radius:99px;border:2px solid #0b0b10;background:#0b0b10;color:#fff;cursor:pointer;text-decoration:none}
+.dibt button{background:transparent;color:#0b0b10}
+#difl{position:absolute;inset:0;background:#ececee;opacity:0;pointer-events:none}
+#disk{position:absolute;right:14px;top:calc(env(safe-area-inset-top,0px) + 14px);z-index:9;font:700 11px system-ui;letter-spacing:.2em;color:#cfd;background:#0007;border:1px solid #fff4;border-radius:99px;padding:8px 14px;cursor:pointer}
+
+#flaIntro{display:none;z-index:99999;font-family:"Arial Black",Impact,system-ui,sans-serif;transition:opacity .9s cubic-bezier(.4,0,.2,1)}
+#flaIntro,#flaIntro *{box-sizing:border-box;margin:0}
+html.fla-lock #flaIntro{display:block}
+html.fla-lock,html.fla-lock body{overflow:hidden!important}
+#flaIntro.out{opacity:0;pointer-events:none}
+#flaIntro #ditt{font-family:"Arial Black",Impact,system-ui,sans-serif;font-weight:900;color:#0b0b10;-webkit-text-fill-color:#0b0b10;background:none;text-transform:none;line-height:1.2}
+#flaIntro #disb{font-family:system-ui,sans-serif;color:#555;-webkit-text-fill-color:#555}
