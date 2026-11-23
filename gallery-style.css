@@ -184,3 +184,62 @@
     padding:4px 12px;
     border-radius:20px;
 }
+
+/* ===== Postingan dengan video YouTube =====
+   Kartu melebar penuh, pemutar 16:9, dan deskripsi punya background sendiri */
+.post-card.has-youtube{
+    grid-column:1 / -1;
+}
+
+.post-card.has-youtube .post-media{
+    aspect-ratio:16/9;
+}
+
+.post-card.has-youtube:hover{
+    transform:none;
+}
+
+.post-slide iframe{
+    width:100%;
+    height:100%;
+    border:0;
+    display:block;
+}
+
+.post-card.has-youtube .post-info{
+    margin:18px;
+    padding:22px 24px;
+    background:rgba(240,228,205,.92);   /* BACKGROUND DESKRIPSI: ubah warna di sini */
+    color:#2b1d14;
+    border-radius:10px;
+    box-shadow:0 4px 14px rgba(0,0,0,.25);
+}
+
+.post-card.has-youtube .post-info h3{
+    font-size:20px;
+    text-transform:uppercase;
+    color:#8a4a12;
+    margin-bottom:10px;
+}
+
+.post-card.has-youtube .post-info .post-desc{
+    color:#2b1d14;
+    line-height:1.8;
+}
+
+.post-card.has-youtube .post-info .post-desc b,
+.post-card.has-youtube .post-info .post-desc a{
+    color:#8a4a12;
+}
+
+/* ===== Keterangan rapi: tiap baris terpisah, label tebal, link bisa diklik ===== */
+.post-desc{
+    color:#a89f8b;
+    font-size:13px;
+    line-height:1.6;
+    overflow-wrap:anywhere;
+}
+.post-desc .desc-line{margin-bottom:8px;}
+.post-desc .desc-gap{height:10px;}
+.post-desc b{color:#f2c14e;font-weight:700;}
+.post-desc a{color:#f2c14e;text-decoration:underline;}

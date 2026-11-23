@@ -1,4 +1,33 @@
 function escGalleryHtml(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+// Ambil ID video dari link YouTube (null kalau bukan link YouTube)
+function getYoutubeIdFromUrl(url){
+    const m = String(url || '').match(/^https?:\/\/(?:www\.)?(?:youtube\.com\/watch\?(?:.*&)?v=|youtu\.be\/)([\w-]{11})(?:[?&#]|$)/);
+    return m ? m[1] : null;
+}
+
+// Merapikan keterangan: tiap baris tampil terpisah, "Label: isi" -> label ditebalkan,
+// link http(s) otomatis bisa diklik, baris kosong jadi jarak antar paragraf.
+function formatDescription(text){
+    const lines = String(text == null ? '' : text).replace(/\r/g, '').trim().split('\n');
+    return lines.map(raw => {
+        const line = raw.trim();
+        if(!line) return '<div class="desc-gap"></div>';
+        let html = escGalleryHtml(line);
+        // tautan otomatis
+        html = html.replace(/https?:\/\/[^\s<]+/g, u => {
+            const clean = u.replace(/(&quot;|&#39;|[.,;!?)])+$/, '');
+            const tail = u.slice(clean.length);
+            return `<a href="${clean}" target="_blank" rel="noopener noreferrer">${clean}</a>${tail}`;
+        });
+        // "Label: isi" -> label tebal (bukan untuk URL "https://")
+        const m = html.match(/^([^:\/<>]{2,40}?)\s*:(?!\/\/)\s*(.*)$/);
+        if(m){
+            return `<div class="desc-line"><b>${m[1]}</b>${m[2] ? ': ' + m[2] : ''}</div>`;
+        }
+        return `<div class="desc-line">${html}</div>`;
+    }).join('');
+}
+
 // Menampilkan postingan (foto/video/teks + keterangan) sesuai kategori halaman
 // Mendukung SATU atau BANYAK file per postingan (tabel post_media)
 // Dipakai di halaman semester, karya-tulisan, pengalaman, sertifikat, dll
@@ -50,13 +79,20 @@ async function loadCategoryPosts(category, subject, containerId){
         let mediaHtml = '';
 
         if(mediaList.length > 0){
+            const hasYoutube = mediaList.some(m => getYoutubeIdFromUrl(m.media_url));
+            if(hasYoutube) card.classList.add('has-youtube');
+
             const slides = mediaList.map(m => {
+                const ytId = getYoutubeIdFromUrl(m.media_url);
+                if(ytId){
+                    return `<div class="post-slide"><iframe src="https://www.youtube.com/embed/${ytId}" title="${escGalleryHtml(post.title)}" loading="lazy" allowfullscreen allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe></div>`;
+                }
                 return m.media_type === 'video'
                     ? `<div class="post-slide"><video src="${escGalleryHtml(m.media_url)}" controls></video></div>`
                     : `<div class="post-slide"><img src="${escGalleryHtml(m.media_url)}" alt="${escGalleryHtml(post.title)}" class="zoomable-img"></div>`;
             }).join('');
 
-            const badge = mediaList.length > 1 ? `<div class="media-count-badge">📷 ${mediaList.length}</div>` : '';
+            const badge = mediaList.length > 1 ? `<div class="media-count-badge">${hasYoutube ? '▶' : '📷'} ${mediaList.length}</div>` : '';
 
             mediaHtml = `
                 <div class="post-media">
@@ -71,7 +107,7 @@ async function loadCategoryPosts(category, subject, containerId){
             ${mediaHtml}
             <div class="post-info">
                 <h3>${escGalleryHtml(post.title)}</h3>
-                <p>${escGalleryHtml(post.description || '')}</p>
+                <div class="post-desc">${formatDescription(post.description)}</div>
             </div>
         `;
 

@@ -200,6 +200,34 @@ button:disabled{
     align-items:center;
 }
 
+.yt-preview{
+    margin-top:10px;
+    position:relative;
+    aspect-ratio:16/9;
+    border-radius:8px;
+    overflow:hidden;
+    background:#000;
+}
+.yt-preview iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
+.yt-preview.bad{
+    aspect-ratio:auto;
+    padding:10px 12px;
+    font-size:12px;
+    color:#ff8080;
+    background:rgba(255,60,60,.12);
+}
+
+.tpl-btn{
+    width:auto;
+    margin:0 0 8px;
+    padding:8px 12px;
+    background:transparent;
+    border:1px dashed #f2c14e;
+    color:#f2c14e;
+    font-size:12px;
+}
+.tpl-btn:hover{background:rgba(242,193,78,.1);}
+
 a.back{
     color:#8a8f9c;
     font-size:13px;
@@ -269,7 +297,9 @@ a.back:hover{
             <input type="text" id="postTitle" required placeholder="Contoh: Ekskul Badminton">
 
             <label>Keterangan</label>
+            <button type="button" id="tplBtn" class="tpl-btn">📋 Isi template analisis tari</button>
             <textarea id="postDesc" placeholder="Ceritakan tentang foto/video ini..."></textarea>
+            <div class="hint">Tips: tulis satu info per baris dengan format <b>Judul: isi</b> (judulnya otomatis tebal). Baris kosong = jarak antar bagian. Link otomatis bisa diklik.</div>
 
             <label>Mode Upload</label>
             <div class="mode-toggle">
@@ -294,6 +324,11 @@ a.back:hover{
                 <div class="hint">Tahan Ctrl (Windows) / Cmd (Mac) untuk memilih beberapa file sekaligus.</div>
                 <div id="fileCountInfo" class="hint"></div>
             </div>
+
+            <label>Link YouTube (opsional)</label>
+            <input type="url" id="postYoutube" placeholder="Tempel link YouTube, contoh: https://youtu.be/xxxxxxxxxxx">
+            <div class="hint">Video akan tampil di halaman seperti pemutar YouTube. Boleh dikombinasikan dengan foto/video upload.</div>
+            <div id="ytPreview" class="yt-preview hidden"></div>
 
             <button type="submit" id="submitBtn">Publish</button>
         </form>
@@ -369,6 +404,46 @@ postFileMultiple.addEventListener('change', () => {
     fileCountInfo.textContent = n > 0 ? `${n} file dipilih.` : '';
 });
 
+// YOUTUBE: ambil ID video dari berbagai format link (watch?v=, youtu.be, shorts, embed, live)
+function getYoutubeId(url){
+    const m = String(url || '').trim().match(/^https?:\/\/(?:www\.|m\.)?(?:youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/)|youtu\.be\/)([\w-]{11})(?:[?&#/]|$)/);
+    return m ? m[1] : null;
+}
+const postYoutube = document.getElementById('postYoutube');
+const ytPreview = document.getElementById('ytPreview');
+postYoutube.addEventListener('input', () => {
+    const val = postYoutube.value.trim();
+    ytPreview.className = 'yt-preview hidden';
+    ytPreview.innerHTML = '';
+    if(!val) return;
+    const id = getYoutubeId(val);
+    if(id){
+        ytPreview.className = 'yt-preview';
+        ytPreview.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}" title="Preview YouTube" allowfullscreen></iframe>`;
+    } else {
+        ytPreview.className = 'yt-preview bad';
+        ytPreview.textContent = 'Link YouTube tidak dikenali.';
+    }
+});
+
+// Template keterangan agar penulisan rapi dan runtut
+document.getElementById('tplBtn').addEventListener('click', () => {
+    const ta = document.getElementById('postDesc');
+    if(ta.value.trim() && !confirm('Keterangan yang sudah ditulis akan diganti template. Lanjut?')) return;
+    ta.value =
+`Nama Tari: 
+Asal Daerah: 
+
+Wiraga (gerak): 
+Wirama (irama): 
+Wirasa (ekspresi): 
+
+Unsur Pendukung (busana/properti): 
+
+Kesimpulan: `;
+    ta.focus();
+});
+
 function showMsg(el, text, type){
     el.textContent = text;
     el.className = 'msg ' + type;
@@ -434,6 +509,15 @@ uploadForm.addEventListener('submit', async (e) => {
         return;
     }
 
+    const ytUrl = postYoutube.value.trim();
+    const ytId = ytUrl ? getYoutubeId(ytUrl) : null;
+    if(ytUrl && !ytId){
+        showMsg(uploadMsg, 'Link YouTube tidak valid. Tempel link video YouTube yang benar.', 'error');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Publish';
+        return;
+    }
+
     try {
         // 1. Buat dulu postingannya (judul/keterangan/kategori)
         // Kalau tidak ada file sama sekali, ini otomatis jadi postingan teks saja.
@@ -445,7 +529,7 @@ uploadForm.addEventListener('submit', async (e) => {
                 category,
                 subject: getMapelList(category) ? postSubject.value : null,
                 media_url: null,
-                media_type: files.length > 0 ? null : 'text'
+                media_type: (files.length > 0 || ytId) ? null : 'text'
             })
             .select()
             .single();
@@ -479,8 +563,23 @@ uploadForm.addEventListener('submit', async (e) => {
             if(mediaInsertError) throw mediaInsertError;
         }
 
+        // 3. Simpan link YouTube (disimpan di post_media sebagai link youtube.com/watch, tanpa perlu ubah database)
+        if(ytId){
+            const { error: ytError } = await supabaseClient
+                .from('post_media')
+                .insert({
+                    post_id: postData.id,
+                    media_url: 'https://www.youtube.com/watch?v=' + ytId,
+                    media_type: 'video',
+                    sort_order: files.length
+                });
+            if(ytError) throw ytError;
+        }
+
         showMsg(uploadMsg, 'Berhasil dipublish!' + (files.length > 1 ? ` (${files.length} file)` : ''), 'success');
         uploadForm.reset();
+        ytPreview.className = 'yt-preview hidden';
+        ytPreview.innerHTML = '';
         refreshSubjectOptions();
         singleFileWrap.classList.remove('hidden');
         multiFileWrap.classList.add('hidden');
@@ -508,7 +607,7 @@ const CATEGORY_LABELS = {
 async function loadPosts(){
     const { data, error } = await supabaseClient
         .from('posts')
-        .select('*, post_media(media_type)')
+        .select('*, post_media(media_type, media_url)')
         .order('created_at', { ascending: false });
 
     if(error){ postList.innerHTML = ''; return; }
@@ -526,6 +625,8 @@ async function loadPosts(){
         if(mediaItems.length === 0){
             // fallback ke data lama (single media_url di tabel posts), atau memang teks saja
             typeTag = post.media_type === 'video' ? '🎬' : post.media_type === 'image' ? '🖼️' : '📝';
+        } else if(mediaItems.length === 1 && getYoutubeId(mediaItems[0].media_url)){
+            typeTag = '▶️';
         } else if(mediaItems.length === 1){
             typeTag = mediaItems[0].media_type === 'video' ? '🎬' : '🖼️';
         } else {
